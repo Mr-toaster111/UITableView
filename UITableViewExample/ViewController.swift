@@ -39,11 +39,21 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
 
         //Create a footer and a header for your tableView
-        var footerTableView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
+        let footerTableView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
         footerTableView.backgroundColor = UIColor.blueColor()
 
-        var headerTableView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
+        let textFieldFooter = UILabel(frame: footerTableView.bounds)
+        textFieldFooter.text = "Footer view"
+        textFieldFooter.textAlignment = .Center
+        footerTableView.addSubview(textFieldFooter)
+
+        let headerTableView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
         headerTableView.backgroundColor = UIColor.redColor()
+
+        let textFieldHeader = UILabel(frame: headerTableView.bounds)
+        textFieldHeader.text = "Header view"
+        textFieldHeader.textAlignment = .Center
+        headerTableView.addSubview(textFieldHeader)
 
         //Add your header and your footer to your tableView
         tableView.tableFooterView = footerTableView
@@ -58,29 +68,25 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        cell!.textLabel?.text = "\(arraySource.objectAtIndex(indexPath.row))"
-
-        return cell!
+        let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell")!
+        cell.textLabel?.text = "\(arraySource.objectAtIndex(indexPath.row))"
+        cell.accessoryType = UITableViewCellAccessoryType.DetailButton
+        return cell
     }
 
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("row selected : \(indexPath.row)")
+        let alert = UIAlertController(title: "row selected : \(indexPath.row) in section \(indexPath.section) ", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            
+        self.presentViewController(alert, animated: true, completion: nil)
     }
-
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return " section 1"
-        }
-        else if section == 1 {
-            return " section 2"
-        }
-        else {
-             return " section 3"
-        }
+        return "section \(section)"
     }
+
+
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -95,12 +101,17 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 64
+        return 44
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
     }
+
+
+
+
+
 
 
 
